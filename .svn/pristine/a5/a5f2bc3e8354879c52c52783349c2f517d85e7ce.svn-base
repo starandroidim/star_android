@@ -1,0 +1,65 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:1:1-20:12
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:1:1-20:12
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:1:1-20:12
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:1:1-20:12
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:1:1-20:12
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:1:1-20:12
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:1:1-20:12
+	package
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:2:5-37
+		INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+		INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:1:1-20:12
+		INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:1:1-20:12
+		INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:1:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:4:5-66
+	android:name
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:4:22-64
+application
+ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:6:5-19:19
+activity#com.jjpicture.mvvmstar.base.ContainerActivity
+ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:7:9-9:75
+	android:configChanges
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:9:13-63
+	android:name
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:8:13-51
+activity#com.jjpicture.mvvmstar.crash.DefaultErrorActivity
+ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:10:9-12:48
+	android:process
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:12:13-46
+	android:name
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:11:13-55
+provider#com.jjpicture.mvvmstar.crash.CaocInitProvider
+ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:13:9-17:39
+	android:authorities
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:15:13-85
+	android:exported
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:16:13-37
+	android:initOrder
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:17:13-36
+	android:name
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml:14:13-51
+uses-sdk
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+		INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+		ADDED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml
+		INJECTED from /Users/wren/Music/star/android/star_android/mvvmstar/src/main/AndroidManifest.xml

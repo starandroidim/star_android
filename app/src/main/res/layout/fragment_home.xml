@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="com.jjpicture.mvvmstar.base.BaseViewModel" />
+
+        <variable
+            name="viewModel"
+            type="BaseViewModel" />
+
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|left"
+        android:orientation="vertical"
+        android:padding="100pt">
+
+        <TextView
+            android:layout_width="110pt"
+            android:layout_height="110pt"
+            android:text="home" />
+
+    </LinearLayout>
+</layout>
