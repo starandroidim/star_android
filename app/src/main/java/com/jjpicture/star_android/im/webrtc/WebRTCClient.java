@@ -86,7 +86,6 @@ public class WebRTCClient {
             MessageServiceImpl.getInstance().sendMessage(messageProtocol, IMClient.getChannel(), 3);
         }
 
-
         webRTCListener.onLocalStream(localMS);
     }
 
@@ -113,7 +112,7 @@ public class WebRTCClient {
 
         @Override
         public void onCreateSuccess(SessionDescription sessionDescription) {
-            sendMessage(userId, sessionDescription.type.canonicalForm(), sessionDescription.description);
+            sendMessage(sessionDescription.type.canonicalForm(), sessionDescription.description);
             //设置localSDP
             peerConnection.setLocalDescription(this, sessionDescription);
         }
@@ -163,7 +162,7 @@ public class WebRTCClient {
             payload.put("label", iceCandidate.sdpMLineIndex);
             payload.put("id", iceCandidate.sdpMid);
             payload.put("candidate", iceCandidate.sdp);
-            sendMessage(userId,"candidate", payload.toString());
+            sendMessage("candidate", payload.toString());
         }
 
         @Override
@@ -174,7 +173,6 @@ public class WebRTCClient {
         @Override
         public void onAddStream(MediaStream mediaStream) {
             //TODO 添加远程音频流
-            mediaStream.audioTracks.get(0);
             webRTCListener.onAddRemoteStream(mediaStream);
         }
 
@@ -198,7 +196,7 @@ public class WebRTCClient {
 
         }
 
-        private void sendMessage(Long toId, String type, String body) {
+        private void sendMessage(String type, String body) {
             //包装消息
             ChatMessageProto.ChatMessageProtocol messageProtocol =
                     ChatMessageFactory.buildMessage(

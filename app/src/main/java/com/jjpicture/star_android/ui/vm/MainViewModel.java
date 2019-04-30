@@ -34,14 +34,15 @@ public class MainViewModel extends BaseViewModel<TestRepository> implements WebR
 
     @Override
     public void onCallReady(Long callId) {
-        if (callId.equals(UserConfig.getUserId())) {
-
-        }
+//        if (callId.equals(UserConfig.getUserId())) {
+//
+//        }
     }
 
     @Override
     public void onAddRemoteStream(MediaStream remoteStream) {
-
+        KLog.d("添加远程音频流");
+        remoteStream.audioTracks.get(0);
     }
 
     @Override

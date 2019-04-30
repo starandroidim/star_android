@@ -32,9 +32,9 @@ public class SDPMessageHandler {
      */
     public static SDPMessageHandler INSTANCE = new SDPMessageHandler();
 
-    private Map<Integer, Handler> handlerMap = new HashMap<>();
+    private Map<Integer, Handler> handlerMap = new HashMap<>(4);
 
-    private Map<Integer, String> typeMap = new HashMap<>();
+    private Map<Integer, String> typeMap = new HashMap<>(4);
 
     private MediaConstraints pcConstraints = new MediaConstraints();
 
@@ -67,6 +67,8 @@ public class SDPMessageHandler {
     private class InitHandler implements Handler {
         /**
          * 创建offer
+         * @param type
+         * @param payload
          */
         @Override
         public void handleMessage(String type, String payload) {
@@ -78,6 +80,7 @@ public class SDPMessageHandler {
         /**
          * 设置remoteSDP
          * 创建answer
+         * @param type
          * @param payload
          */
         @Override
@@ -94,6 +97,7 @@ public class SDPMessageHandler {
     private class AnswerHandler implements Handler {
         /**
          * 设置remoteSDP
+         * @param type
          * @param payload
          */
         @Override
