@@ -1,16 +1,14 @@
 package com.jjpicture.star_android.im.webrtc;
 
-import android.content.Context;
-
-import com.jjpicture.mvvmstar.im_common.ChatType;
+import com.jjpicture.mvvmstar.im_common.enums.ChatType;
+import com.jjpicture.mvvmstar.im_common.enums.MessageType;
 import com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto;
 import com.jjpicture.mvvmstar.im_common.util.ChatMessageFactory;
 import com.jjpicture.star_android.im.client.IMClient;
 import com.jjpicture.star_android.im.config.UserConfig;
 import com.jjpicture.star_android.im.service.impl.MessageServiceImpl;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import org.webrtc.AudioSource;
 import org.webrtc.DataChannel;
 import org.webrtc.IceCandidate;
@@ -22,10 +20,8 @@ import org.webrtc.RtpReceiver;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author lyl
@@ -83,8 +79,9 @@ public class WebRTCClient {
                             UserConfig.FRIEND_ID,
                             UserConfig.getUserId(),
                             ChatType.CHAT_VOICECALL.getIndex(),
+                            MessageType.MESSAGE_CALL.getIndex(),
                             1,
-                            "VOICE_CALL");
+                            "");
             //发送消息
             MessageServiceImpl.getInstance().sendMessage(messageProtocol, IMClient.getChannel(), 3);
         }
@@ -95,10 +92,6 @@ public class WebRTCClient {
 
     public void setWebRTCListener(WebRTCListener webRTCListener) {
         this.webRTCListener = webRTCListener;
-    }
-
-    public WebRTCListener getWebRTCListener() {
-        return webRTCListener;
     }
 
     public class Peer implements SdpObserver, PeerConnection.Observer {
@@ -120,14 +113,7 @@ public class WebRTCClient {
 
         @Override
         public void onCreateSuccess(SessionDescription sessionDescription) {
-            JSONObject payload = new JSONObject();
-            try {
-                payload.put("type", sessionDescription.type.canonicalForm());
-                payload.put("sdp", sessionDescription.description);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            sendMessage(userId, sessionDescription.type.canonicalForm(), payload);
+            sendMessage(userId, sessionDescription.type.canonicalForm(), sessionDescription.description);
             //设置localSDP
             peerConnection.setLocalDescription(this, sessionDescription);
         }
@@ -174,14 +160,10 @@ public class WebRTCClient {
         @Override
         public void onIceCandidate(IceCandidate iceCandidate) {
             JSONObject payload = new JSONObject();
-            try {
-                payload.put("label", iceCandidate.sdpMLineIndex);
-                payload.put("id", iceCandidate.sdpMid);
-                payload.put("candidate", iceCandidate.sdp);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            sendMessage(userId,"candidate", payload);
+            payload.put("label", iceCandidate.sdpMLineIndex);
+            payload.put("id", iceCandidate.sdpMid);
+            payload.put("candidate", iceCandidate.sdp);
+            sendMessage(userId,"candidate", payload.toString());
         }
 
         @Override
@@ -216,22 +198,16 @@ public class WebRTCClient {
 
         }
 
-        private void sendMessage(Long toId, String type, JSONObject payload) {
+        private void sendMessage(Long toId, String type, String body) {
             //包装消息
-            JSONObject body = new JSONObject();
-            try {
-                body.put("type", type);
-                body.put("payload", payload);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
             ChatMessageProto.ChatMessageProtocol messageProtocol =
                     ChatMessageFactory.buildMessage(
                             UserConfig.getUserId(),
                             userId,
                             ChatType.CHAT_VOICECALL.getIndex(),
+                            MessageType.valueOf(type).getIndex(),
                             1,
-                            body.toString());
+                            body);
             //发送消息
             MessageServiceImpl.getInstance().sendMessage(messageProtocol, IMClient.getChannel(), 3);
         }

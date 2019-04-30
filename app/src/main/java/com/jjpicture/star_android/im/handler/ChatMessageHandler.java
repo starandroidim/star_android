@@ -1,22 +1,15 @@
 package com.jjpicture.star_android.im.handler;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.jjpicture.mvvmstar.im_common.enums.ChatType;
+import com.jjpicture.mvvmstar.im_common.enums.MessageType;
 import com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto;
 import com.jjpicture.mvvmstar.im_common.protocol.MessageResponseProto;
 import com.jjpicture.mvvmstar.im_common.util.ChatMessageFactory;
 import com.jjpicture.mvvmstar.im_common.util.MessageResponseFactory;
 import com.jjpicture.mvvmstar.utils.KLog;
 import com.jjpicture.star_android.im.config.UserConfig;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -39,8 +32,8 @@ public class ChatMessageHandler extends SimpleChannelInboundHandler<ChatMessageP
     protected void channelRead0(ChannelHandlerContext ctx, ChatMessageProto.ChatMessageProtocol msg) {
         //TODO 客户端利用messageId去重
         KLog.i("shit");
-        KLog.i("收到用户【{}】发来的消息:{}", msg.getFromId() + msg.getBody());
-        int type = msg.getType();
+        KLog.i("收到用户【{}】发来的消息:{}", msg.getFromId() + msg.getMsgBody().toStringUtf8());
+        int type = msg.getChatType();
         if(type == ChatType.CHAT_SINGLE.getIndex()){
 
             // TODO 这个response判断是否是自己发的
@@ -57,21 +50,17 @@ public class ChatMessageHandler extends SimpleChannelInboundHandler<ChatMessageP
 
         }
         else if(type == ChatType.CHAT_VOICECALL.getIndex()){
-            if (msg.getBody().equals("VOICE_CALL")) {
-                // 是否接听
-                JSONObject body = new JSONObject();
-                try {
-                    body.put("type", "init");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            if (msg.getMsgType() == MessageType.MESSAGE_CALL.getIndex()) {
+                //TODO 是否接听
+
                 ChatMessageProto.ChatMessageProtocol messageProtocol =
                         ChatMessageFactory.buildMessage(
                                 UserConfig.getUserId(),
                                 msg.getFromId(),
                                 type,
-                                1,
-                                body.toString());
+                                MessageType.MESSAGE_INIT.getIndex(),
+                                0,
+                                "");
                 ctx.channel().writeAndFlush(messageProtocol);
             } else {
                 SDPMessageHandler.INSTANCE.handle(msg);

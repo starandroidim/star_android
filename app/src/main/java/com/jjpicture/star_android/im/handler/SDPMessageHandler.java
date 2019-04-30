@@ -2,6 +2,7 @@ package com.jjpicture.star_android.im.handler;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.jjpicture.mvvmstar.im_common.enums.MessageType;
 import com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto;
 import com.jjpicture.star_android.im.webrtc.WebRTCClient;
 
@@ -31,29 +32,35 @@ public class SDPMessageHandler {
      */
     public static SDPMessageHandler INSTANCE = new SDPMessageHandler();
 
-    private Map<String, Handler> handlerMap = new HashMap<>();
+    private Map<Integer, Handler> handlerMap = new HashMap<>();
+
+    private Map<Integer, String> typeMap = new HashMap<>();
 
     private MediaConstraints pcConstraints = new MediaConstraints();
 
     private WebRTCClient.Peer peer;
 
     public SDPMessageHandler() {
-        handlerMap.put("init", new InitHandler());
-        handlerMap.put("offer", new OfferHandler());
-        handlerMap.put("answer", new AnswerHandler());
-        handlerMap.put("candidate", new CandidateHandler());
+        handlerMap.put(4, new InitHandler());
+        handlerMap.put(5, new OfferHandler());
+        handlerMap.put(6, new AnswerHandler());
+        handlerMap.put(7, new CandidateHandler());
+
+        typeMap.put(4, "init");
+        typeMap.put(5, "offer");
+        typeMap.put(6, "answer");
+        typeMap.put(7, "candidate");
+
     }
 
     public void handle(ChatMessageProto.ChatMessageProtocol messageProtocol){
         peer = WebRTCClient.INSTANCE.getPeer(messageProtocol.getFromId());
 
-        String bodyStr = messageProtocol.getBody();
-        JSONObject bodyJson = JSONObject.parseObject(bodyStr);
-        String type = bodyJson.getString("type");
+        int type = messageProtocol.getMsgType();
 
         Handler handler = handlerMap.get(type);
         if (handler != null) {
-            handler.handleMessage(type.equals("init") ? null : bodyJson.getJSONObject("payload"));
+            handler.handleMessage(typeMap.get(type), messageProtocol.getMsgBody().toStringUtf8());
         }
     }
 
@@ -62,7 +69,7 @@ public class SDPMessageHandler {
          * 创建offer
          */
         @Override
-        public void handleMessage(JSONObject payload) {
+        public void handleMessage(String type, String payload) {
             peer.getPeerConnection().createOffer(peer, pcConstraints);
         }
     }
@@ -74,10 +81,10 @@ public class SDPMessageHandler {
          * @param payload
          */
         @Override
-        public void handleMessage(JSONObject payload) {
+        public void handleMessage(String type, String payload) {
             SessionDescription sdp = new SessionDescription(
-                    SessionDescription.Type.fromCanonicalForm(payload.getString("type")),
-                    payload.getString("sdp")
+                    SessionDescription.Type.fromCanonicalForm(type),
+                    payload
             );
             peer.getPeerConnection().setRemoteDescription(peer, sdp);
             peer.getPeerConnection().createAnswer(peer, pcConstraints);
@@ -90,10 +97,10 @@ public class SDPMessageHandler {
          * @param payload
          */
         @Override
-        public void handleMessage(JSONObject payload) {
+        public void handleMessage(String type, String payload) {
             SessionDescription sdp = new SessionDescription(
-                    SessionDescription.Type.fromCanonicalForm(payload.getString("type")),
-                    payload.getString("sdp")
+                    SessionDescription.Type.fromCanonicalForm(type),
+                    payload
             );
             peer.getPeerConnection().setRemoteDescription(peer, sdp);
         }
@@ -101,13 +108,14 @@ public class SDPMessageHandler {
 
     private class CandidateHandler implements Handler {
         @Override
-        public void handleMessage(JSONObject payload) {
+        public void handleMessage(String type, String payload) {
+            JSONObject jsonObject = JSONObject.parseObject(payload);
             PeerConnection pc = peer.getPeerConnection();
             if (pc.getRemoteDescription() != null) {
                 IceCandidate candidate = new IceCandidate(
-                        payload.getString("id"),
-                        payload.getInteger("label"),
-                        payload.getString("candidate")
+                        jsonObject.getString("id"),
+                        jsonObject.getInteger("label"),
+                        jsonObject.getString("candidate")
                 );
                 pc.addIceCandidate(candidate);
             }
@@ -115,6 +123,6 @@ public class SDPMessageHandler {
     }
 
     public interface Handler {
-        void handleMessage(JSONObject payload);
+        void handleMessage(String type, String payload);
     }
 }

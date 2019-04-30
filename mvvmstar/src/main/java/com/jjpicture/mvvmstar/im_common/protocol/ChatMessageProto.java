@@ -52,20 +52,20 @@ public final class ChatMessageProto {
 
     /**
      * <pre>
-     * 单聊、群聊
+     * 聊天类型：单聊、群聊、语音通话
      * </pre>
      *
-     * <code>required int32 type = 4;</code>
+     * <code>required int32 chatType = 4;</code>
      */
-    boolean hasType();
+    boolean hasChatType();
     /**
      * <pre>
-     * 单聊、群聊
+     * 聊天类型：单聊、群聊、语音通话
      * </pre>
      *
-     * <code>required int32 type = 4;</code>
+     * <code>required int32 chatType = 4;</code>
      */
-    int getType();
+    int getChatType();
 
     /**
      * <code>required int64 timestamp = 5;</code>
@@ -86,29 +86,53 @@ public final class ChatMessageProto {
     int getLevel();
 
     /**
-     * <code>required string body = 7;</code>
+     * <pre>
+     * 消息类型：文本、文件、图片等
+     * </pre>
+     *
+     * <code>required int32 msgType = 7;</code>
      */
-    boolean hasBody();
+    boolean hasMsgType();
     /**
-     * <code>required string body = 7;</code>
+     * <pre>
+     * 消息类型：文本、文件、图片等
+     * </pre>
+     *
+     * <code>required int32 msgType = 7;</code>
      */
-    String getBody();
-    /**
-     * <code>required string body = 7;</code>
-     */
-    com.google.protobuf.ByteString
-        getBodyBytes();
+    int getMsgType();
 
     /**
-     * <code>required string ext = 8;</code>
+     * <code>required bytes msgBody = 8;</code>
+     */
+    boolean hasMsgBody();
+    /**
+     * <code>required bytes msgBody = 8;</code>
+     */
+    com.google.protobuf.ByteString getMsgBody();
+
+    /**
+     * <pre>
+     * 扩展
+     * </pre>
+     *
+     * <code>required string ext = 9;</code>
      */
     boolean hasExt();
     /**
-     * <code>required string ext = 8;</code>
+     * <pre>
+     * 扩展
+     * </pre>
+     *
+     * <code>required string ext = 9;</code>
      */
     String getExt();
     /**
-     * <code>required string ext = 8;</code>
+     * <pre>
+     * 扩展
+     * </pre>
+     *
+     * <code>required string ext = 9;</code>
      */
     com.google.protobuf.ByteString
         getExtBytes();
@@ -129,10 +153,11 @@ public final class ChatMessageProto {
       msgId_ = "";
       fromId_ = 0L;
       toId_ = 0L;
-      type_ = 0;
+      chatType_ = 0;
       timestamp_ = 0L;
       level_ = 0;
-      body_ = "";
+      msgType_ = 0;
+      msgBody_ = com.google.protobuf.ByteString.EMPTY;
       ext_ = "";
     }
 
@@ -185,7 +210,7 @@ public final class ChatMessageProto {
             }
             case 32: {
               bitField0_ |= 0x00000008;
-              type_ = input.readInt32();
+              chatType_ = input.readInt32();
               break;
             }
             case 40: {
@@ -198,15 +223,19 @@ public final class ChatMessageProto {
               level_ = input.readInt32();
               break;
             }
-            case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 56: {
               bitField0_ |= 0x00000040;
-              body_ = bs;
+              msgType_ = input.readInt32();
               break;
             }
             case 66: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
+              msgBody_ = input.readBytes();
+              break;
+            }
+            case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000100;
               ext_ = bs;
               break;
             }
@@ -227,7 +256,7 @@ public final class ChatMessageProto {
       return com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto.internal_static_com_star_common_protocol_ChatMessageProtocol_descriptor;
     }
 
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+    protected FieldAccessorTable
         internalGetFieldAccessorTable() {
       return com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto.internal_static_com_star_common_protocol_ChatMessageProtocol_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
@@ -307,27 +336,27 @@ public final class ChatMessageProto {
       return toId_;
     }
 
-    public static final int TYPE_FIELD_NUMBER = 4;
-    private int type_;
+    public static final int CHATTYPE_FIELD_NUMBER = 4;
+    private int chatType_;
     /**
      * <pre>
-     * 单聊、群聊
+     * 聊天类型：单聊、群聊、语音通话
      * </pre>
      *
-     * <code>required int32 type = 4;</code>
+     * <code>required int32 chatType = 4;</code>
      */
-    public boolean hasType() {
+    public boolean hasChatType() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
      * <pre>
-     * 单聊、群聊
+     * 聊天类型：单聊、群聊、语音通话
      * </pre>
      *
-     * <code>required int32 type = 4;</code>
+     * <code>required int32 chatType = 4;</code>
      */
-    public int getType() {
-      return type_;
+    public int getChatType() {
+      return chatType_;
     }
 
     public static final int TIMESTAMP_FIELD_NUMBER = 5;
@@ -360,58 +389,62 @@ public final class ChatMessageProto {
       return level_;
     }
 
-    public static final int BODY_FIELD_NUMBER = 7;
-    private volatile Object body_;
+    public static final int MSGTYPE_FIELD_NUMBER = 7;
+    private int msgType_;
     /**
-     * <code>required string body = 7;</code>
+     * <pre>
+     * 消息类型：文本、文件、图片等
+     * </pre>
+     *
+     * <code>required int32 msgType = 7;</code>
      */
-    public boolean hasBody() {
+    public boolean hasMsgType() {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>required string body = 7;</code>
+     * <pre>
+     * 消息类型：文本、文件、图片等
+     * </pre>
+     *
+     * <code>required int32 msgType = 7;</code>
      */
-    public String getBody() {
-      Object ref = body_;
-      if (ref instanceof String) {
-        return (String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          body_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string body = 7;</code>
-     */
-    public com.google.protobuf.ByteString
-        getBodyBytes() {
-      Object ref = body_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
-        body_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getMsgType() {
+      return msgType_;
     }
 
-    public static final int EXT_FIELD_NUMBER = 8;
-    private volatile Object ext_;
+    public static final int MSGBODY_FIELD_NUMBER = 8;
+    private com.google.protobuf.ByteString msgBody_;
     /**
-     * <code>required string ext = 8;</code>
+     * <code>required bytes msgBody = 8;</code>
      */
-    public boolean hasExt() {
+    public boolean hasMsgBody() {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>required string ext = 8;</code>
+     * <code>required bytes msgBody = 8;</code>
+     */
+    public com.google.protobuf.ByteString getMsgBody() {
+      return msgBody_;
+    }
+
+    public static final int EXT_FIELD_NUMBER = 9;
+    private volatile Object ext_;
+    /**
+     * <pre>
+     * 扩展
+     * </pre>
+     *
+     * <code>required string ext = 9;</code>
+     */
+    public boolean hasExt() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <pre>
+     * 扩展
+     * </pre>
+     *
+     * <code>required string ext = 9;</code>
      */
     public String getExt() {
       Object ref = ext_;
@@ -428,7 +461,11 @@ public final class ChatMessageProto {
       }
     }
     /**
-     * <code>required string ext = 8;</code>
+     * <pre>
+     * 扩展
+     * </pre>
+     *
+     * <code>required string ext = 9;</code>
      */
     public com.google.protobuf.ByteString
         getExtBytes() {
@@ -462,7 +499,7 @@ public final class ChatMessageProto {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasType()) {
+      if (!hasChatType()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -474,7 +511,11 @@ public final class ChatMessageProto {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasBody()) {
+      if (!hasMsgType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMsgBody()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -498,7 +539,7 @@ public final class ChatMessageProto {
         output.writeInt64(3, toId_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, type_);
+        output.writeInt32(4, chatType_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt64(5, timestamp_);
@@ -507,10 +548,13 @@ public final class ChatMessageProto {
         output.writeInt32(6, level_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, body_);
+        output.writeInt32(7, msgType_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, ext_);
+        output.writeBytes(8, msgBody_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, ext_);
       }
       unknownFields.writeTo(output);
     }
@@ -533,7 +577,7 @@ public final class ChatMessageProto {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, type_);
+          .computeInt32Size(4, chatType_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
@@ -544,10 +588,15 @@ public final class ChatMessageProto {
           .computeInt32Size(6, level_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, body_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, msgType_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, ext_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, msgBody_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, ext_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -580,10 +629,10 @@ public final class ChatMessageProto {
         result = result && (getToId()
             == other.getToId());
       }
-      result = result && (hasType() == other.hasType());
-      if (hasType()) {
-        result = result && (getType()
-            == other.getType());
+      result = result && (hasChatType() == other.hasChatType());
+      if (hasChatType()) {
+        result = result && (getChatType()
+            == other.getChatType());
       }
       result = result && (hasTimestamp() == other.hasTimestamp());
       if (hasTimestamp()) {
@@ -595,10 +644,15 @@ public final class ChatMessageProto {
         result = result && (getLevel()
             == other.getLevel());
       }
-      result = result && (hasBody() == other.hasBody());
-      if (hasBody()) {
-        result = result && getBody()
-            .equals(other.getBody());
+      result = result && (hasMsgType() == other.hasMsgType());
+      if (hasMsgType()) {
+        result = result && (getMsgType()
+            == other.getMsgType());
+      }
+      result = result && (hasMsgBody() == other.hasMsgBody());
+      if (hasMsgBody()) {
+        result = result && getMsgBody()
+            .equals(other.getMsgBody());
       }
       result = result && (hasExt() == other.hasExt());
       if (hasExt()) {
@@ -630,9 +684,9 @@ public final class ChatMessageProto {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getToId());
       }
-      if (hasType()) {
-        hash = (37 * hash) + TYPE_FIELD_NUMBER;
-        hash = (53 * hash) + getType();
+      if (hasChatType()) {
+        hash = (37 * hash) + CHATTYPE_FIELD_NUMBER;
+        hash = (53 * hash) + getChatType();
       }
       if (hasTimestamp()) {
         hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
@@ -643,9 +697,13 @@ public final class ChatMessageProto {
         hash = (37 * hash) + LEVEL_FIELD_NUMBER;
         hash = (53 * hash) + getLevel();
       }
-      if (hasBody()) {
-        hash = (37 * hash) + BODY_FIELD_NUMBER;
-        hash = (53 * hash) + getBody().hashCode();
+      if (hasMsgType()) {
+        hash = (37 * hash) + MSGTYPE_FIELD_NUMBER;
+        hash = (53 * hash) + getMsgType();
+      }
+      if (hasMsgBody()) {
+        hash = (37 * hash) + MSGBODY_FIELD_NUMBER;
+        hash = (53 * hash) + getMsgBody().hashCode();
       }
       if (hasExt()) {
         hash = (37 * hash) + EXT_FIELD_NUMBER;
@@ -740,7 +798,7 @@ public final class ChatMessageProto {
 
     @Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -756,7 +814,7 @@ public final class ChatMessageProto {
         return com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto.internal_static_com_star_common_protocol_ChatMessageProtocol_descriptor;
       }
 
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      protected FieldAccessorTable
           internalGetFieldAccessorTable() {
         return com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto.internal_static_com_star_common_protocol_ChatMessageProtocol_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
@@ -769,7 +827,7 @@ public final class ChatMessageProto {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -786,16 +844,18 @@ public final class ChatMessageProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         toId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
-        type_ = 0;
+        chatType_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
         timestamp_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000010);
         level_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
-        body_ = "";
+        msgType_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
-        ext_ = "";
+        msgBody_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000080);
+        ext_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -835,7 +895,7 @@ public final class ChatMessageProto {
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.type_ = type_;
+        result.chatType_ = chatType_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
@@ -847,9 +907,13 @@ public final class ChatMessageProto {
         if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.body_ = body_;
+        result.msgType_ = msgType_;
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000080;
+        }
+        result.msgBody_ = msgBody_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
         }
         result.ext_ = ext_;
         result.bitField0_ = to_bitField0_;
@@ -905,8 +969,8 @@ public final class ChatMessageProto {
         if (other.hasToId()) {
           setToId(other.getToId());
         }
-        if (other.hasType()) {
-          setType(other.getType());
+        if (other.hasChatType()) {
+          setChatType(other.getChatType());
         }
         if (other.hasTimestamp()) {
           setTimestamp(other.getTimestamp());
@@ -914,13 +978,14 @@ public final class ChatMessageProto {
         if (other.hasLevel()) {
           setLevel(other.getLevel());
         }
-        if (other.hasBody()) {
-          bitField0_ |= 0x00000040;
-          body_ = other.body_;
-          onChanged();
+        if (other.hasMsgType()) {
+          setMsgType(other.getMsgType());
+        }
+        if (other.hasMsgBody()) {
+          setMsgBody(other.getMsgBody());
         }
         if (other.hasExt()) {
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000100;
           ext_ = other.ext_;
           onChanged();
         }
@@ -939,7 +1004,7 @@ public final class ChatMessageProto {
         if (!hasToId()) {
           return false;
         }
-        if (!hasType()) {
+        if (!hasChatType()) {
           return false;
         }
         if (!hasTimestamp()) {
@@ -948,7 +1013,10 @@ public final class ChatMessageProto {
         if (!hasLevel()) {
           return false;
         }
-        if (!hasBody()) {
+        if (!hasMsgType()) {
+          return false;
+        }
+        if (!hasMsgBody()) {
           return false;
         }
         if (!hasExt()) {
@@ -1116,50 +1184,50 @@ public final class ChatMessageProto {
         return this;
       }
 
-      private int type_ ;
+      private int chatType_ ;
       /**
        * <pre>
-       * 单聊、群聊
+       * 聊天类型：单聊、群聊、语音通话
        * </pre>
        *
-       * <code>required int32 type = 4;</code>
+       * <code>required int32 chatType = 4;</code>
        */
-      public boolean hasType() {
+      public boolean hasChatType() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
        * <pre>
-       * 单聊、群聊
+       * 聊天类型：单聊、群聊、语音通话
        * </pre>
        *
-       * <code>required int32 type = 4;</code>
+       * <code>required int32 chatType = 4;</code>
        */
-      public int getType() {
-        return type_;
+      public int getChatType() {
+        return chatType_;
       }
       /**
        * <pre>
-       * 单聊、群聊
+       * 聊天类型：单聊、群聊、语音通话
        * </pre>
        *
-       * <code>required int32 type = 4;</code>
+       * <code>required int32 chatType = 4;</code>
        */
-      public Builder setType(int value) {
+      public Builder setChatType(int value) {
         bitField0_ |= 0x00000008;
-        type_ = value;
+        chatType_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 单聊、群聊
+       * 聊天类型：单聊、群聊、语音通话
        * </pre>
        *
-       * <code>required int32 type = 4;</code>
+       * <code>required int32 chatType = 4;</code>
        */
-      public Builder clearType() {
+      public Builder clearChatType() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        type_ = 0;
+        chatType_ = 0;
         onChanged();
         return this;
       }
@@ -1228,91 +1296,106 @@ public final class ChatMessageProto {
         return this;
       }
 
-      private Object body_ = "";
+      private int msgType_ ;
       /**
-       * <code>required string body = 7;</code>
+       * <pre>
+       * 消息类型：文本、文件、图片等
+       * </pre>
+       *
+       * <code>required int32 msgType = 7;</code>
        */
-      public boolean hasBody() {
+      public boolean hasMsgType() {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>required string body = 7;</code>
+       * <pre>
+       * 消息类型：文本、文件、图片等
+       * </pre>
+       *
+       * <code>required int32 msgType = 7;</code>
        */
-      public String getBody() {
-        Object ref = body_;
-        if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            body_ = s;
-          }
-          return s;
-        } else {
-          return (String) ref;
-        }
+      public int getMsgType() {
+        return msgType_;
       }
       /**
-       * <code>required string body = 7;</code>
+       * <pre>
+       * 消息类型：文本、文件、图片等
+       * </pre>
+       *
+       * <code>required int32 msgType = 7;</code>
        */
-      public com.google.protobuf.ByteString
-          getBodyBytes() {
-        Object ref = body_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
-          body_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string body = 7;</code>
-       */
-      public Builder setBody(
-          String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        body_ = value;
+      public Builder setMsgType(int value) {
+        bitField0_ |= 0x00000040;
+        msgType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string body = 7;</code>
+       * <pre>
+       * 消息类型：文本、文件、图片等
+       * </pre>
+       *
+       * <code>required int32 msgType = 7;</code>
        */
-      public Builder clearBody() {
+      public Builder clearMsgType() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        body_ = getDefaultInstance().getBody();
+        msgType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString msgBody_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>required bytes msgBody = 8;</code>
+       */
+      public boolean hasMsgBody() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>required bytes msgBody = 8;</code>
+       */
+      public com.google.protobuf.ByteString getMsgBody() {
+        return msgBody_;
+      }
+      /**
+       * <code>required bytes msgBody = 8;</code>
+       */
+      public Builder setMsgBody(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        msgBody_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string body = 7;</code>
+       * <code>required bytes msgBody = 8;</code>
        */
-      public Builder setBodyBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        body_ = value;
+      public Builder clearMsgBody() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        msgBody_ = getDefaultInstance().getMsgBody();
         onChanged();
         return this;
       }
 
       private Object ext_ = "";
       /**
-       * <code>required string ext = 8;</code>
+       * <pre>
+       * 扩展
+       * </pre>
+       *
+       * <code>required string ext = 9;</code>
        */
       public boolean hasExt() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
+        return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
-       * <code>required string ext = 8;</code>
+       * <pre>
+       * 扩展
+       * </pre>
+       *
+       * <code>required string ext = 9;</code>
        */
       public String getExt() {
         Object ref = ext_;
@@ -1329,7 +1412,11 @@ public final class ChatMessageProto {
         }
       }
       /**
-       * <code>required string ext = 8;</code>
+       * <pre>
+       * 扩展
+       * </pre>
+       *
+       * <code>required string ext = 9;</code>
        */
       public com.google.protobuf.ByteString
           getExtBytes() {
@@ -1345,36 +1432,48 @@ public final class ChatMessageProto {
         }
       }
       /**
-       * <code>required string ext = 8;</code>
+       * <pre>
+       * 扩展
+       * </pre>
+       *
+       * <code>required string ext = 9;</code>
        */
       public Builder setExt(
           String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
         ext_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string ext = 8;</code>
+       * <pre>
+       * 扩展
+       * </pre>
+       *
+       * <code>required string ext = 9;</code>
        */
       public Builder clearExt() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         ext_ = getDefaultInstance().getExt();
         onChanged();
         return this;
       }
       /**
-       * <code>required string ext = 8;</code>
+       * <pre>
+       * 扩展
+       * </pre>
+       *
+       * <code>required string ext = 9;</code>
        */
       public Builder setExtBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000100;
         ext_ = value;
         onChanged();
         return this;
@@ -1443,11 +1542,11 @@ public final class ChatMessageProto {
   static {
     String[] descriptorData = {
       "\n\026ChatMessageProto.proto\022\030com.star.commo" +
-      "n.protocol\"\215\001\n\023ChatMessageProtocol\022\r\n\005ms" +
+      "n.protocol\"\245\001\n\023ChatMessageProtocol\022\r\n\005ms" +
       "gId\030\001 \002(\t\022\016\n\006fromId\030\002 \002(\003\022\014\n\004toId\030\003 \002(\003\022" +
-      "\014\n\004type\030\004 \002(\005\022\021\n\ttimestamp\030\005 \002(\003\022\r\n\005leve" +
-      "l\030\006 \002(\005\022\014\n\004body\030\007 \002(\t\022\013\n\003ext\030\010 \002(\tB\022B\020Ch" +
-      "atMessageProto"
+      "\020\n\010chatType\030\004 \002(\005\022\021\n\ttimestamp\030\005 \002(\003\022\r\n\005" +
+      "level\030\006 \002(\005\022\017\n\007msgType\030\007 \002(\005\022\017\n\007msgBody\030" +
+      "\010 \002(\014\022\013\n\003ext\030\t \002(\tB\022B\020ChatMessageProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1466,7 +1565,7 @@ public final class ChatMessageProto {
     internal_static_com_star_common_protocol_ChatMessageProtocol_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_star_common_protocol_ChatMessageProtocol_descriptor,
-        new String[] { "MsgId", "FromId", "ToId", "Type", "Timestamp", "Level", "Body", "Ext", });
+        new String[] { "MsgId", "FromId", "ToId", "ChatType", "Timestamp", "Level", "MsgType", "MsgBody", "Ext", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

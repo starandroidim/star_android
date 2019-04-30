@@ -1,5 +1,6 @@
 package com.jjpicture.mvvmstar.im_common.util;
 
+import com.google.protobuf.ByteString;
 import com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto;
 
 import java.util.UUID;
@@ -11,8 +12,17 @@ import java.util.UUID;
  * @date 2019/3/610:32
  */
 public class ChatMessageFactory {
-
-    public static ChatMessageProto.ChatMessageProtocol buildMessage(Long fromId, Long toId, int type, int level, String body){
+    /**
+     *
+     * @param fromId
+     * @param toId
+     * @param chatType
+     * @param msgType
+     * @param level
+     * @param body
+     * @return
+     */
+    public static ChatMessageProto.ChatMessageProtocol buildMessage(Long fromId, Long toId, int chatType, int msgType, int level, String body){
         UUID uuid = UUID.randomUUID();
         String msgId = uuid.toString().replace("-", "").toLowerCase();
         Long timestamp = System.currentTimeMillis();
@@ -21,10 +31,11 @@ public class ChatMessageFactory {
                 .setMsgId(msgId)
                 .setFromId(fromId)
                 .setToId(toId)
-                .setType(type)
+                .setChatType(chatType)
+                .setMsgType(msgType)
                 .setTimestamp(timestamp)
                 .setLevel(level)
-                .setBody(body)
+                .setMsgBody(ByteString.copyFromUtf8(body))
                 //可选参数
                 .setExt("")
                 .build();

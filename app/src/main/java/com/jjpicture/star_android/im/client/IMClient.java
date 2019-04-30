@@ -4,11 +4,12 @@ package com.jjpicture.star_android.im.client;
 
 import android.os.Handler;
 
-import com.jjpicture.mvvmstar.im_common.ChatType;
-import com.jjpicture.mvvmstar.im_common.LogType;
 import com.jjpicture.mvvmstar.im_common.constant.Attributes;
 import com.jjpicture.mvvmstar.im_common.decoder.CustomProtobufDecoder;
 import com.jjpicture.mvvmstar.im_common.encoder.CustomProtobufEncoder;
+import com.jjpicture.mvvmstar.im_common.enums.ChatType;
+import com.jjpicture.mvvmstar.im_common.enums.LogType;
+import com.jjpicture.mvvmstar.im_common.enums.MessageType;
 import com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto;
 import com.jjpicture.mvvmstar.im_common.protocol.LogRequestProto;
 import com.jjpicture.mvvmstar.im_common.request.LogoutReq;
@@ -140,11 +141,11 @@ public class IMClient {
     public void sendP2P(TestChatModel testChatModel) throws IOException {
         ChatMessageProto.ChatMessageProtocol chatMsg = ChatMessageFactory.buildMessage(
                 UserConfig.getUserId(),
-                        testChatModel.getToId() ,
-                        ChatType.CHAT_SINGLE.getIndex(),
-                        0,
-                        testChatModel.getMessage()
-                );
+                testChatModel.getToId() ,
+                ChatType.CHAT_SINGLE.getIndex(),
+                MessageType.MESSAGE_TEXT.getIndex(),
+                0,
+                testChatModel.getMessage());
         messageService.sendMessage(chatMsg, channel, 100);
     }
 
