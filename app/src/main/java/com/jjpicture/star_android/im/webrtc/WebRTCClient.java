@@ -21,8 +21,10 @@ import org.webrtc.RtpReceiver;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lyl
@@ -40,6 +42,7 @@ public class WebRTCClient {
     private MediaStream localMS;
     private WebRTCListener webRTCListener;
     private Peer peer;
+    private Map<String, Integer> typeMap = new HashMap<>();
 
     public static WebRTCClient INSTANCE = new WebRTCClient();
 
@@ -62,6 +65,10 @@ public class WebRTCClient {
 //        PeerConnectionFactory.InitializationOptions options = builder.createInitializationOptions();
 //        PeerConnectionFactory.initialize(options);
 //        peerConnectionFactory = new PeerConnectionFactory(options);
+        typeMap.put("init", 4);
+        typeMap.put("offer", 5);
+        typeMap.put("answer", 6);
+        typeMap.put("candidate", 7);
 
         peerConnectionFactory = PeerConnectionFactory.builder().createPeerConnectionFactory();
         iceServers.add(PeerConnection.IceServer.builder("stun:23.21.150.121").createIceServer());
@@ -205,7 +212,7 @@ public class WebRTCClient {
                             UserConfig.getUserId(),
                             userId,
                             ChatType.CHAT_VOICECALL.getIndex(),
-                            MessageType.valueOf(type).getIndex(),
+                            typeMap.get(type),
                             1,
                             body);
             //发送消息
