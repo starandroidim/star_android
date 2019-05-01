@@ -101,7 +101,7 @@ public class MessageViewModel extends BaseViewModel<TestRepository> {
 
     public void sendMsg() {
         TestChatModel testChatModel = new TestChatModel();
-        testChatModel.setToId(Long.parseLong("1552465428829"));
+        testChatModel.setToId(Long.parseLong("1555912992478"));
         testChatModel.setMessage("message"+new Random(25).nextInt());
         try {
             client.sendP2P(testChatModel);
