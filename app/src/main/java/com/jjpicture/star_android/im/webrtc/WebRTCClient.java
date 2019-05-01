@@ -4,6 +4,7 @@ import com.jjpicture.mvvmstar.im_common.enums.ChatType;
 import com.jjpicture.mvvmstar.im_common.enums.MessageType;
 import com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto;
 import com.jjpicture.mvvmstar.im_common.util.ChatMessageFactory;
+import com.jjpicture.mvvmstar.utils.KLog;
 import com.jjpicture.star_android.im.client.IMClient;
 import com.jjpicture.star_android.im.config.UserConfig;
 import com.jjpicture.star_android.im.service.impl.MessageServiceImpl;
@@ -112,6 +113,7 @@ public class WebRTCClient {
 
         @Override
         public void onCreateSuccess(SessionDescription sessionDescription) {
+            KLog.d("创建" + sessionDescription.type.canonicalForm() +"成功");
             sendMessage(sessionDescription.type.canonicalForm(), sessionDescription.description);
             //设置localSDP
             peerConnection.setLocalDescription(this, sessionDescription);
