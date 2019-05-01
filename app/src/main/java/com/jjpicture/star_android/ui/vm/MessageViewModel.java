@@ -52,12 +52,12 @@ public class MessageViewModel extends BaseViewModel<TestRepository>  implements 
 
     @Override
     public void onRemoveRemoteStream() {
-
+        KLog.d("移除远程音频流");
     }
 
     @Override
     public void onStatusChanged(String newStatus) {
-
+        KLog.d(newStatus);
     }
 
     public ObservableField<String> receivedMsg = new ObservableField<>("");

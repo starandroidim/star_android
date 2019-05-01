@@ -4,6 +4,7 @@ package com.jjpicture.star_android.im.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.jjpicture.mvvmstar.im_common.enums.MessageType;
 import com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto;
+import com.jjpicture.mvvmstar.utils.KLog;
 import com.jjpicture.star_android.im.webrtc.WebRTCClient;
 
 import org.webrtc.IceCandidate;
@@ -54,7 +55,9 @@ public class SDPMessageHandler {
     }
 
     public void handle(ChatMessageProto.ChatMessageProtocol messageProtocol){
-        peer = WebRTCClient.INSTANCE.getPeer(messageProtocol.getFromId());
+        if (peer == null) {
+            peer = WebRTCClient.INSTANCE.getPeer(messageProtocol.getFromId());
+        }
 
         int type = messageProtocol.getMsgType();
 
@@ -72,6 +75,7 @@ public class SDPMessageHandler {
          */
         @Override
         public void handleMessage(String type, String payload) {
+            KLog.d("创建offer");
             peer.getPeerConnection().createOffer(peer, pcConstraints);
         }
     }
@@ -85,6 +89,7 @@ public class SDPMessageHandler {
          */
         @Override
         public void handleMessage(String type, String payload) {
+            KLog.d("设置remoteSDP,创建answer");
             SessionDescription sdp = new SessionDescription(
                     SessionDescription.Type.fromCanonicalForm(type),
                     payload
@@ -102,6 +107,7 @@ public class SDPMessageHandler {
          */
         @Override
         public void handleMessage(String type, String payload) {
+            KLog.d("设置remoteSDP");
             SessionDescription sdp = new SessionDescription(
                     SessionDescription.Type.fromCanonicalForm(type),
                     payload

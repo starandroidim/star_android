@@ -50,6 +50,7 @@ public class ChatMessageHandler extends SimpleChannelInboundHandler<ChatMessageP
 
         }
         else if(type == ChatType.CHAT_VOICECALL.getIndex()){
+            KLog.d(msg.getMsgType());
             if (msg.getMsgType() == MessageType.MESSAGE_CALL.getIndex()) {
                 //TODO 是否接听
 
