@@ -66,13 +66,14 @@ public class MainViewModel extends BaseViewModel<TestRepository> implements WebR
     public MainViewModel(@NonNull Application application, TestRepository repository)  {
         super(application, repository);
         //logout();
-        login();
+        //login();
         //testSendP2P();
 
-        WebRTCClient webrtcClient = WebRTCClient.INSTANCE;
-        webrtcClient.setWebRTCListener(this);
+        //WebRTCClient webrtcClient = WebRTCClient.INSTANCE;
+        //webrtcClient.setWebRTCListener(this);
 
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

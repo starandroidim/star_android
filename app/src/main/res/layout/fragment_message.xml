@@ -1,27 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:binding="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <import type="com.jjpicture.mvvmstar.base.BaseViewModel" />
+        <import type="com.jjpicture.star_android.ui.vm.MessageViewModel" />
 
         <variable
             name="viewModel"
-            type="BaseViewModel" />
+            type="MessageViewModel" />
 
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom|left"
+        android:gravity="top"
         android:orientation="vertical"
         android:padding="100pt">
 
         <TextView
             android:layout_width="100pt"
             android:layout_height="100pt"
-            android:text="message" />
+            android:text="@={viewModel.receivedMsg}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+
+            android:padding="6dp">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Blue"
+                android:text="发送消息"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                binding:onClickCommand="@{viewModel.sendOnClickCommand}" />
+        </LinearLayout>
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="点击发送按钮发送消息"
+            android:textColor="#EE1010" />
 
     </LinearLayout>
+
+
+
 </layout>
