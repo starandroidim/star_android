@@ -18,6 +18,9 @@ import com.jjpicture.star_android.data.TestRepository;
 import com.jjpicture.star_android.im.client.IMClient;
 import com.jjpicture.star_android.im.config.UserConfig;
 import com.jjpicture.star_android.im.model.TestChatModel;
+import com.jjpicture.star_android.im.webrtc.WebRTCClient;
+
+import org.webrtc.MediaStream;
 
 import java.io.IOException;
 import java.util.Random;
@@ -26,7 +29,36 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 
-public class MessageViewModel extends BaseViewModel<TestRepository> {
+public class MessageViewModel extends BaseViewModel<TestRepository>  implements WebRTCClient.WebRTCListener {
+
+    @Override
+    public void onCallReady(Long callId) {
+//        if (callId.equals(UserConfig.getUserId())) {
+//
+//        }
+    }
+
+    @Override
+    public void onAddRemoteStream(MediaStream remoteStream) {
+        KLog.d("添加远程音频流");
+        KLog.d(remoteStream.audioTracks.get(0));
+    }
+
+    @Override
+    public void onLocalStream(MediaStream localStream) {
+        localStream.audioTracks.get(0);
+    }
+
+    @Override
+    public void onRemoveRemoteStream() {
+
+    }
+
+    @Override
+    public void onStatusChanged(String newStatus) {
+
+    }
+
     public ObservableField<String> receivedMsg = new ObservableField<>("");
 
     IMClient client = IMClient.getInstance();
@@ -38,8 +70,8 @@ public class MessageViewModel extends BaseViewModel<TestRepository> {
         //testSendP2P();
         KLog.e("wtf");
 
-        //WebRTCClient webrtcClient = WebRTCClient.INSTANCE;
-        //webrtcClient.setWebRTCListener(this);
+        WebRTCClient webrtcClient = WebRTCClient.INSTANCE;
+        webrtcClient.setWebRTCListener(this);
 
     }
 
@@ -94,14 +126,15 @@ public class MessageViewModel extends BaseViewModel<TestRepository> {
     public BindingCommand sendOnClickCommand = new BindingCommand(new BindingAction() {
         @Override
         public void call() {
-            sendMsg();
+//            sendMsg();
+            WebRTCClient.INSTANCE.start();
         }
     });
 
 
     public void sendMsg() {
         TestChatModel testChatModel = new TestChatModel();
-        testChatModel.setToId(Long.parseLong("1555912992478"));
+        testChatModel.setToId(UserConfig.FRIEND_ID);
         testChatModel.setMessage("message"+new Random(25).nextInt());
         try {
             client.sendP2P(testChatModel);

@@ -30,36 +30,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 
-public class MainViewModel extends BaseViewModel<TestRepository> implements WebRTCClient.WebRTCListener {
-
-    @Override
-    public void onCallReady(Long callId) {
-//        if (callId.equals(UserConfig.getUserId())) {
-//
-//        }
-    }
-
-    @Override
-    public void onAddRemoteStream(MediaStream remoteStream) {
-        KLog.d("添加远程音频流");
-        remoteStream.audioTracks.get(0);
-    }
-
-    @Override
-    public void onLocalStream(MediaStream localStream) {
-        localStream.audioTracks.get(0);
-    }
-
-    @Override
-    public void onRemoveRemoteStream() {
-
-    }
-
-    @Override
-    public void onStatusChanged(String newStatus) {
-
-    }
-
+public class MainViewModel extends BaseViewModel<TestRepository> {
 
     IMClient client = IMClient.getInstance();
 
