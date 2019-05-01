@@ -77,8 +77,8 @@ public class WebRTCClient {
         if (!UserConfig.getUserId().equals(UserConfig.FRIEND_ID)) {
             ChatMessageProto.ChatMessageProtocol messageProtocol =
                     ChatMessageFactory.buildMessage(
-                            UserConfig.FRIEND_ID,
                             UserConfig.getUserId(),
+                            UserConfig.FRIEND_ID,
                             ChatType.CHAT_VOICECALL.getIndex(),
                             MessageType.MESSAGE_CALL.getIndex(),
                             1,

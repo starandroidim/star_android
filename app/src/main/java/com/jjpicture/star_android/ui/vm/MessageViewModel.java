@@ -46,7 +46,8 @@ public class MessageViewModel extends BaseViewModel<TestRepository>  implements 
 
     @Override
     public void onLocalStream(MediaStream localStream) {
-        localStream.audioTracks.get(0);
+        KLog.d("本地音频流");
+        KLog.d(localStream.audioTracks.get(0));
     }
 
     @Override

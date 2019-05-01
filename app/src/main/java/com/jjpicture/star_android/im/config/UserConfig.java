@@ -11,7 +11,7 @@ package com.jjpicture.star_android.im.config;
 public class UserConfig {
 
     //TODO lyl
-    public final static Long FRIEND_ID = 1552465428829L;
+    public final static Long FRIEND_ID = 1555912992478L;
 
     private static Long userId = Long.parseLong("1552465428829");
 
