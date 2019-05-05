@@ -11,11 +11,17 @@ package com.jjpicture.star_android.im.config;
 public class UserConfig {
 
     //TODO lyl
-    public final static Long FRIEND_ID = 1555912992478L;
+//    public final static Long FRIEND_ID = 1555912992478L;
+//
+//    private static Long userId = 1552465428829L;
+//
+//    private static String userName = "lyl";
 
-    private static Long userId = Long.parseLong("1552465428829");
+    public final static Long FRIEND_ID = 1552465428829L;
 
-    private static String userName = "lyl";
+    private static Long userId = 1555912992478L;
+
+    private static String userName = "test";
 
     public static String getUserName() {
         return userName;

@@ -11,6 +11,7 @@ import com.jjpicture.star_android.im.service.impl.MessageServiceImpl;
 
 import com.alibaba.fastjson.JSONObject;
 import org.webrtc.AudioSource;
+import org.webrtc.AudioTrack;
 import org.webrtc.DataChannel;
 import org.webrtc.IceCandidate;
 import org.webrtc.MediaConstraints;
@@ -20,6 +21,7 @@ import org.webrtc.PeerConnectionFactory;
 import org.webrtc.RtpReceiver;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
+import org.webrtc.voiceengine.WebRtcAudioManager;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -73,26 +75,16 @@ public class WebRTCClient {
         peerConnectionFactory = PeerConnectionFactory.builder().createPeerConnectionFactory();
         iceServers.add(PeerConnection.IceServer.builder("stun:23.21.150.121").createIceServer());
         iceServers.add(PeerConnection.IceServer.builder("stun:stun.l.google.com:19302").createIceServer());
+
+        mediaConstraints.mandatory.add(new MediaConstraints.KeyValuePair("OfferToReceiveAudio", "true"));
+
     }
 
     public void start() {
         localMS = peerConnectionFactory.createLocalMediaStream("ARDAMS");
         AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
-        localMS.addTrack(peerConnectionFactory.createAudioTrack("ARDAMSa0", audioSource));
-        //TODO TEST
-
-        if (!UserConfig.getUserId().equals(UserConfig.FRIEND_ID)) {
-            ChatMessageProto.ChatMessageProtocol messageProtocol =
-                    ChatMessageFactory.buildMessage(
-                            UserConfig.getUserId(),
-                            UserConfig.FRIEND_ID,
-                            ChatType.CHAT_VOICECALL.getIndex(),
-                            MessageType.MESSAGE_CALL.getIndex(),
-                            1,
-                            "");
-            //发送消息
-            MessageServiceImpl.getInstance().sendMessage(messageProtocol, IMClient.getChannel(), 3);
-        }
+        AudioTrack audioTrack = peerConnectionFactory.createAudioTrack("ARDAMSa0", audioSource);
+        localMS.addTrack(audioTrack);
 
         webRTCListener.onLocalStream(localMS);
     }
@@ -128,17 +120,17 @@ public class WebRTCClient {
 
         @Override
         public void onCreateFailure(String s) {
-
+            KLog.d(s);
         }
 
         @Override
         public void onSetSuccess() {
-
+            KLog.d("设置成功");
         }
 
         @Override
         public void onSetFailure(String s) {
-
+            KLog.d(s);
         }
 
         @Override
@@ -182,6 +174,7 @@ public class WebRTCClient {
         @Override
         public void onAddStream(MediaStream mediaStream) {
             //TODO 添加远程音频流
+            KLog.d(userId);
             webRTCListener.onAddRemoteStream(mediaStream);
         }
 
@@ -202,7 +195,7 @@ public class WebRTCClient {
 
         @Override
         public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
-
+            KLog.d("添加track");
         }
 
         private void sendMessage(String type, String body) {
@@ -233,4 +226,7 @@ public class WebRTCClient {
         webRTCListener.onRemoveRemoteStream();
     }
 
+    public MediaConstraints getMediaConstraints() {
+        return mediaConstraints;
+    }
 }

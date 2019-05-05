@@ -37,7 +37,7 @@ public class SDPMessageHandler {
 
     private Map<Integer, String> typeMap = new HashMap<>(4);
 
-    private MediaConstraints pcConstraints = new MediaConstraints();
+    private MediaConstraints mediaConstraints;
 
     private WebRTCClient.Peer peer;
 
@@ -55,6 +55,9 @@ public class SDPMessageHandler {
     }
 
     public void handle(ChatMessageProto.ChatMessageProtocol messageProtocol){
+        if (mediaConstraints == null) {
+            mediaConstraints = WebRTCClient.INSTANCE.getMediaConstraints();
+        }
         if (peer == null) {
             peer = WebRTCClient.INSTANCE.getPeer(messageProtocol.getFromId());
         }
@@ -76,7 +79,7 @@ public class SDPMessageHandler {
         @Override
         public void handleMessage(String type, String payload) {
             KLog.d("创建offer");
-            peer.getPeerConnection().createOffer(peer, pcConstraints);
+            peer.getPeerConnection().createOffer(peer, mediaConstraints);
         }
     }
 
@@ -95,7 +98,7 @@ public class SDPMessageHandler {
                     payload
             );
             peer.getPeerConnection().setRemoteDescription(peer, sdp);
-            peer.getPeerConnection().createAnswer(peer, pcConstraints);
+            peer.getPeerConnection().createAnswer(peer, mediaConstraints);
         }
     }
 

@@ -1,10 +1,15 @@
 package com.jjpicture.star_android.ui.activity;
 
 
+import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -67,8 +72,32 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         //sendRequest();
 
 
+        //录音权限
+        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{
+                    android.Manifest.permission.RECORD_AUDIO},1);
+        }
 
+//        openSpeaker();
     }
+
+//    private void openSpeaker() {
+//        try{
+//            AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+////            currVolume = audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL);
+//            if(!audioManager.isSpeakerphoneOn()) {
+//                //setSpeakerphoneOn() only work when audio mode set to MODE_IN_CALL.
+//                audioManager.setMode(AudioManager.MODE_IN_CALL);
+//                audioManager.setSpeakerphoneOn(true);
+//                audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL,
+//                        audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL ),
+//                        AudioManager.STREAM_VOICE_CALL);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void initFragment() {
         mFragments = new ArrayList<>();

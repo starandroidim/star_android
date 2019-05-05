@@ -9,18 +9,24 @@ import android.support.annotation.NonNull;
 import com.jjpicture.mvvmstar.base.BaseViewModel;
 import com.jjpicture.mvvmstar.binding.command.BindingAction;
 import com.jjpicture.mvvmstar.binding.command.BindingCommand;
+import com.jjpicture.mvvmstar.im_common.enums.ChatType;
+import com.jjpicture.mvvmstar.im_common.enums.MessageType;
+import com.jjpicture.mvvmstar.im_common.protocol.ChatMessageProto;
 import com.jjpicture.mvvmstar.im_common.request.LoginReq;
 import com.jjpicture.mvvmstar.im_common.response.BaseResponse;
 import com.jjpicture.mvvmstar.im_common.response.ServerInfoRes;
+import com.jjpicture.mvvmstar.im_common.util.ChatMessageFactory;
 import com.jjpicture.mvvmstar.utils.KLog;
 import com.jjpicture.mvvmstar.utils.RxUtils;
 import com.jjpicture.star_android.data.TestRepository;
 import com.jjpicture.star_android.im.client.IMClient;
 import com.jjpicture.star_android.im.config.UserConfig;
 import com.jjpicture.star_android.im.model.TestChatModel;
+import com.jjpicture.star_android.im.service.impl.MessageServiceImpl;
 import com.jjpicture.star_android.im.webrtc.WebRTCClient;
 
 import org.webrtc.MediaStream;
+import org.webrtc.voiceengine.WebRtcAudioManager;
 
 import java.io.IOException;
 import java.util.Random;
@@ -41,13 +47,13 @@ public class MessageViewModel extends BaseViewModel<TestRepository>  implements 
     @Override
     public void onAddRemoteStream(MediaStream remoteStream) {
         KLog.d("添加远程音频流");
-        KLog.d(remoteStream.audioTracks.get(0));
+        remoteStream.audioTracks.get(0);
     }
 
     @Override
     public void onLocalStream(MediaStream localStream) {
         KLog.d("本地音频流");
-        KLog.d(localStream.audioTracks.get(0));
+        localStream.audioTracks.get(0);
     }
 
     @Override
@@ -129,6 +135,21 @@ public class MessageViewModel extends BaseViewModel<TestRepository>  implements 
         public void call() {
 //            sendMsg();
             WebRTCClient.INSTANCE.start();
+
+            if (!UserConfig.getUserId().equals(UserConfig.FRIEND_ID)) {
+                ChatMessageProto.ChatMessageProtocol messageProtocol =
+                        ChatMessageFactory.buildMessage(
+                                UserConfig.getUserId(),
+                                UserConfig.FRIEND_ID,
+                                ChatType.CHAT_VOICECALL.getIndex(),
+                                MessageType.MESSAGE_CALL.getIndex(),
+                                1,
+                                "");
+                //发送消息
+                MessageServiceImpl.getInstance().sendMessage(messageProtocol, IMClient.getChannel(), 3);
+            }
+
+
         }
     });
 
@@ -143,5 +164,4 @@ public class MessageViewModel extends BaseViewModel<TestRepository>  implements 
             e.printStackTrace();
         }
     }
-
 }

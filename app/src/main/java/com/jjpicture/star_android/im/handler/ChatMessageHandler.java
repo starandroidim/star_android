@@ -10,6 +10,8 @@ import com.jjpicture.mvvmstar.im_common.util.ChatMessageFactory;
 import com.jjpicture.mvvmstar.im_common.util.MessageResponseFactory;
 import com.jjpicture.mvvmstar.utils.KLog;
 import com.jjpicture.star_android.im.config.UserConfig;
+import com.jjpicture.star_android.im.webrtc.WebRTCClient;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -53,6 +55,8 @@ public class ChatMessageHandler extends SimpleChannelInboundHandler<ChatMessageP
             KLog.d(msg.getMsgType());
             if (msg.getMsgType() == MessageType.MESSAGE_CALL.getIndex()) {
                 //TODO 是否接听
+
+                WebRTCClient.INSTANCE.start();
 
                 ChatMessageProto.ChatMessageProtocol messageProtocol =
                         ChatMessageFactory.buildMessage(
