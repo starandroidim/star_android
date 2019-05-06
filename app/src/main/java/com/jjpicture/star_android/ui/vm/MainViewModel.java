@@ -3,9 +3,13 @@ package com.jjpicture.star_android.ui.vm;
 
 import android.app.Application;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.Button;
 
 
 import com.jjpicture.mvvmstar.base.BaseViewModel;
@@ -15,11 +19,13 @@ import com.jjpicture.mvvmstar.im_common.response.BaseResponse;
 import com.jjpicture.mvvmstar.im_common.response.ServerInfoRes;
 import com.jjpicture.mvvmstar.utils.KLog;
 import com.jjpicture.mvvmstar.utils.RxUtils;
+import com.jjpicture.star_android.R;
 import com.jjpicture.star_android.data.TestRepository;
 import com.jjpicture.star_android.im.client.IMClient;
 import com.jjpicture.star_android.im.config.UserConfig;
 import com.jjpicture.star_android.im.model.TestChatModel;
 import com.jjpicture.star_android.im.webrtc.WebRTCClient;
+import com.jjpicture.star_android.ui.fragment.MessageFragment;
 
 
 import org.webrtc.MediaStream;
@@ -40,6 +46,7 @@ public class MainViewModel extends BaseViewModel<TestRepository> {
         //login();
         //testSendP2P();
 
+
         //WebRTCClient webrtcClient = WebRTCClient.INSTANCE;
         //webrtcClient.setWebRTCListener(this);
 
@@ -49,34 +56,6 @@ public class MainViewModel extends BaseViewModel<TestRepository> {
     public void onDestroy() {
         super.onDestroy();
     }
-
-    public void logout() {
-        LogoutReq logoutReq = new LogoutReq();
-        logoutReq.setUserId(UserConfig.getUserId());
-
-        logoutReq.setUserName(UserConfig.getUserName());
-        addSubscribe(model.logout(logoutReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        //showDialog();
-                    }
-                })
-                .subscribe(new Consumer<BaseResponse<Object>>() {
-                    @Override
-                    public void accept(BaseResponse<Object> res) throws Exception {
-                        //dismissDialog();
-                        //保存账号密码
-                        //进入DemoActivity页面
-                        KLog.d("退出登陆成功",res);
-                        //关闭页面
-                        //finish();
-                        Thread.sleep(5000);
-                    }
-                }));
-    }
-
 
 
     public void login() {
@@ -122,6 +101,7 @@ public class MainViewModel extends BaseViewModel<TestRepository> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     Handler handler = new Handler() {
@@ -130,14 +110,17 @@ public class MainViewModel extends BaseViewModel<TestRepository> {
             String m = msg.obj + "";
             KLog.i("客户端收到消息"+m);
             switch (msg.what) {
-                case 0:
+                case 0: {
+
+
                     KLog.i(msg.obj);
                     break;
-
+                }
                 default:
                     //Toast.makeText(activity, "UNKNOWN MSG: " + m, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
+
 }
