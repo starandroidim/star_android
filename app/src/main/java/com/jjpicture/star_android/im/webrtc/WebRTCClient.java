@@ -89,6 +89,27 @@ public class WebRTCClient {
         webRTCListener.onLocalStream(localMS);
     }
 
+    /**
+     * 接受
+     */
+    public void answerCall() {
+//        init();
+    }
+
+    /**
+     * 发起通话
+     */
+    public void startCall() {
+//        init();
+    }
+
+    /**
+     * 结束通话
+     */
+    public void endCall() {
+
+    }
+
     public void setWebRTCListener(WebRTCListener webRTCListener) {
         this.webRTCListener = webRTCListener;
     }
@@ -113,7 +134,7 @@ public class WebRTCClient {
         @Override
         public void onCreateSuccess(SessionDescription sessionDescription) {
             KLog.d("创建" + sessionDescription.type.canonicalForm() +"成功");
-            sendMessage(sessionDescription.type.canonicalForm(), sessionDescription.description);
+            sendSDPMessage(sessionDescription.type.canonicalForm(), sessionDescription.description);
             //设置localSDP
             peerConnection.setLocalDescription(this, sessionDescription);
         }
@@ -163,7 +184,7 @@ public class WebRTCClient {
             payload.put("label", iceCandidate.sdpMLineIndex);
             payload.put("id", iceCandidate.sdpMid);
             payload.put("candidate", iceCandidate.sdp);
-            sendMessage("candidate", payload.toString());
+            sendSDPMessage("candidate", payload.toString());
         }
 
         @Override
@@ -198,7 +219,7 @@ public class WebRTCClient {
             KLog.d("添加track");
         }
 
-        private void sendMessage(String type, String body) {
+        private void sendSDPMessage(String type, String body) {
             //包装消息
             ChatMessageProto.ChatMessageProtocol messageProtocol =
                     ChatMessageFactory.buildMessage(

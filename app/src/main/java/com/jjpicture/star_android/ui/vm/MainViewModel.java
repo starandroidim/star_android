@@ -85,7 +85,6 @@ public class MainViewModel extends BaseViewModel<TestRepository> {
                         Thread.sleep(5000);
 
                         //TODO
-                        WebRTCClient.INSTANCE.start();
 //                        testSendP2P();
                     }
                 }));
