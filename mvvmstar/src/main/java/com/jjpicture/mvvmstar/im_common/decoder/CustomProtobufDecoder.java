@@ -42,25 +42,30 @@ public class CustomProtobufDecoder extends ByteToMessageDecoder {
                 return;
             }
 
+
             // 读取body
             ByteBuf bodyByteBuf = in.readBytes(length);
 
-            byte[] array;
-            int offset;
+            try {
+                byte[] array;
+                int offset;
 
-            int readableLen= bodyByteBuf.readableBytes();
-            if (bodyByteBuf.hasArray()) {
-                array = bodyByteBuf.array();
-                offset = bodyByteBuf.arrayOffset() + bodyByteBuf.readerIndex();
-            } else {
-                array = new byte[readableLen];
-                bodyByteBuf.getBytes(bodyByteBuf.readerIndex(), array, 0, readableLen);
-                offset = 0;
+                int readableLen= bodyByteBuf.readableBytes();
+                if (bodyByteBuf.hasArray()) {
+                    array = bodyByteBuf.array();
+                    offset = bodyByteBuf.arrayOffset() + bodyByteBuf.readerIndex();
+                } else {
+                    array = new byte[readableLen];
+                    bodyByteBuf.getBytes(bodyByteBuf.readerIndex(), array, 0, readableLen);
+                    offset = 0;
+                }
+
+                //反序列化
+                MessageLite result = decodeBody(dataType, array, offset, readableLen);
+                out.add(result);
+            } finally {
+                bodyByteBuf.release();
             }
-
-            //反序列化
-            MessageLite result = decodeBody(dataType, array, offset, readableLen);
-            out.add(result);
         }
     }
 
