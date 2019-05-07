@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.jjpicture.mvvmstar.base.BaseFragment;
 
@@ -30,7 +31,10 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding, Messag
 
     @Override
     public void initData() {
+
         viewModel.setReceivedMsg("test");
+        viewModel.setStartButton(binding.btnStart);
+
     }
 
 
@@ -39,6 +43,8 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding, Messag
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
         return ViewModelProviders.of(this, factory).get(MessageViewModel.class);
     }
+
+
 
 
 }

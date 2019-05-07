@@ -7,7 +7,6 @@
         <variable
             name="viewModel"
             type="MessageViewModel" />
-
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,6 +21,14 @@
             android:layout_height="100pt"
             android:text="@={viewModel.receivedMsg}" />
 
+
+
+
+        <TextView
+            android:layout_width="100pt"
+            android:layout_height="100pt"
+            android:text="@={viewModel.result}" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,6 +38,7 @@
             android:padding="6dp">
 
             <Button
+                android:id="@+id/btn_test"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/Blue"
@@ -39,6 +47,46 @@
                 android:textSize="18sp"
                 binding:onClickCommand="@{viewModel.sendOnClickCommand}" />
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+
+            android:padding="6dp">
+
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Blue"
+                android:text="开始录音"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                binding:onClickCommand="@{viewModel.startRecordOnClickCommand}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+
+            android:padding="6dp">
+
+            <Button
+                android:id="@+id/btn_play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Blue"
+                android:text="播放消息"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                binding:onClickCommand="@{viewModel.playOnClickCommand}" />
+        </LinearLayout>
+
 
         <TextView
             android:gravity="center"
