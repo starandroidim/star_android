@@ -10,6 +10,7 @@ import com.jjpicture.mvvmstar.im_common.request.RegisterReq;
 import com.jjpicture.mvvmstar.im_common.response.BaseResponse;
 import com.jjpicture.mvvmstar.im_common.response.RegisterRes;
 import com.jjpicture.mvvmstar.im_common.response.ServerInfoRes;
+import com.jjpicture.star_android.data.local.LocalDataSourceImpl;
 import com.jjpicture.star_android.data.service.IMService;
 import com.jjpicture.star_android.entity.WeatherEntity;
 import com.jjpicture.star_android.im.model.TestChatModel;
@@ -18,24 +19,25 @@ import java.io.IOException;
 
 import io.reactivex.Observable;
 
-public class TestRepository extends BaseModel implements HttpDataSource, IMService {
+public class TestRepository extends BaseModel implements HttpDataSource, IMService, LocalDataSource {
 
     private volatile static TestRepository INSTANCE = null;
     private final HttpDataSource mHttpDataSource;
     private final IMWork imWork;
+    private final LocalDataSource mLocalDataSource;
 
-
-    private TestRepository(@NonNull HttpDataSource httpDataSource, @NonNull IMWork imWork) {
+    private TestRepository(@NonNull HttpDataSource httpDataSource, @NonNull IMWork imWork, @NonNull LocalDataSource localDataSource) {
         this.mHttpDataSource = httpDataSource;
         this.imWork = imWork;
+        this.mLocalDataSource = localDataSource;
 
     }
 
-    public static TestRepository getInstance(HttpDataSource httpDataSource,IMWork imWork) {
+    public static TestRepository getInstance(HttpDataSource httpDataSource,IMWork imWork, LocalDataSource localDataSource) {
         if (INSTANCE == null) {
             synchronized (TestRepository.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new TestRepository(httpDataSource,imWork);
+                    INSTANCE = new TestRepository(httpDataSource,imWork,localDataSource);
                 }
             }
         }
@@ -66,5 +68,25 @@ public class TestRepository extends BaseModel implements HttpDataSource, IMServi
     @Override
     public Observable<BaseResponse<ServerInfoRes>> login(LoginReq loginReq) {
         return imWork.login(loginReq);
+    }
+
+    @Override
+    public void saveUserName(String userName) {
+        mLocalDataSource.saveUserName(userName);
+    }
+
+    @Override
+    public void savePassword(String password) {
+        mLocalDataSource.savePassword(password);
+    }
+
+    @Override
+    public String getUserName() {
+        return mLocalDataSource.getUserName();
+    }
+
+    @Override
+    public String getPassword() {
+        return mLocalDataSource.getPassword();
     }
 }

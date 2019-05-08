@@ -31,6 +31,7 @@ import com.jjpicture.star_android.ui.fragment.HomeFragment;
 import com.jjpicture.star_android.ui.fragment.MeFragment;
 import com.jjpicture.star_android.ui.fragment.MessageFragment;
 import com.jjpicture.star_android.ui.fragment.MomentFragment;
+import com.jjpicture.star_android.ui.fragment.TestFragment;
 import com.jjpicture.star_android.ui.vm.MainViewModel;
 
 import java.util.ArrayList;
@@ -114,6 +115,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         mFragments.add(new MomentFragment());
         mFragments.add(new MessageFragment());
         mFragments.add(new MeFragment());
+        mFragments.add(new TestFragment());
         //默认选中第一个
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.frameLayout, mFragments.get(0));
@@ -128,6 +130,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
                 .addItem(newItem(R.mipmap.moment,R.mipmap.moment_select,"广场"))
                 .addItem(newItem(R.mipmap.message,R.mipmap.message_select,"消息"))
                 .addItem(newItem(R.mipmap.me,R.mipmap.me_select,"个人"))
+                .addItem(newItem(R.mipmap.message,R.mipmap.message,"测试"))
                 .build();
         //设置消息数
         navigationController.setMessageNumber(2, 8);

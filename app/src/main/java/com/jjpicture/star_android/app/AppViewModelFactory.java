@@ -10,6 +10,7 @@ import android.support.annotation.VisibleForTesting;
 import com.jjpicture.star_android.data.TestRepository;
 import com.jjpicture.star_android.ui.vm.MainViewModel;
 import com.jjpicture.star_android.ui.vm.MessageViewModel;
+import com.jjpicture.star_android.ui.vm.TestViewModel;
 
 public class AppViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @SuppressLint("StaticFieldLeak")
@@ -45,6 +46,8 @@ public class AppViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new MainViewModel(mApplication, mRepository);
         } else if(modelClass.isAssignableFrom(MessageViewModel.class)) {
             return (T) new MessageViewModel(mApplication,mRepository);
+        } else if(modelClass.isAssignableFrom(TestViewModel.class)) {
+            return (T) new TestViewModel(mApplication,mRepository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }
