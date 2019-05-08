@@ -242,6 +242,7 @@ public class WebRTCClient {
     }
 
     public void removePeer() {
+        peer = null;
         peer.peerConnection.close();
         //TODO 移除远程音频流
         webRTCListener.onRemoveRemoteStream();
