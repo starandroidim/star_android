@@ -34,9 +34,7 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding, Messag
 
         viewModel.setReceivedMsg("test");
         viewModel.setStartButton(binding.btnStart);
-
     }
-
 
     @Override
     public MessageViewModel initViewModel() {

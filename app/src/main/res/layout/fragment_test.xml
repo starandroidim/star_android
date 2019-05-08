@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:binding="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.jjpicture.star_android.ui.vm.TestViewModel" />
+
+        <variable
+            name="viewModel"
+            type="TestViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:padding="100pt">
+<!--
+        <TextView
+            android:layout_width="100pt"
+            android:layout_height="100pt"
+            android:text="@={viewModel.receivedMsg}" />
+
+
+        <TextView
+            android:layout_width="100pt"
+            android:layout_height="100pt"
+            android:text="@={viewModel.result}" /> -->
+
+
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@={viewModel.resultText}"
+            android:textColor="@color/black"
+            android:textSize="30dp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+
+            android:padding="6dp">
+
+            <Button
+                android:id="@+id/btn_speech"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Blue"
+                android:text="@={viewModel.btnSpeechText}"
+                android:textColor="@color/white"
+                binding:onClickCommand="@{viewModel.startOnClickCommand}"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+
+            android:padding="6dp">
+
+            <Button
+                android:id="@+id/btn_play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Blue"
+                android:text="播放消息"
+                binding:onClickCommand="@{viewModel.startOnClickCommand}"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:id="@+id/fl_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/iv_voice_input_logo"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="正在说话"
+                android:textColor="#504B2D"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="40dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_indicator7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/voice_indicator_7"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/iv_indicator6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/voice_indicator_6"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/iv_indicator5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/voice_indicator_5"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/iv_indicator4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/voice_indicator_4"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/iv_indicator3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/voice_indicator_3"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/iv_indicator2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/voice_indicator_2"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/iv_indicator1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/voice_indicator_1"
+                    android:visibility="gone"/>
+
+
+            </LinearLayout>
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+
+
+</layout>
