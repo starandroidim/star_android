@@ -10,7 +10,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lyl
@@ -19,6 +21,16 @@ import java.util.List;
  * @date 2019/3/618:52
  */
 public class CustomProtobufDecoder extends ByteToMessageDecoder {
+    public final static CustomProtobufDecoder INSTANCE = new CustomProtobufDecoder();
+    private final Map<Byte, MessageLite> map = new HashMap<>();
+
+    private CustomProtobufDecoder() {
+        map.put((byte)0, ChatMessageProto.ChatMessageProtocol.getDefaultInstance());
+        map.put((byte)1, HeartBeatProto.HeartBeatProtocol.getDefaultInstance());
+        map.put((byte)2, LogRequestProto.LogRequestProtocol.getDefaultInstance());
+        map.put((byte)3, MessageResponseProto.MessageResponseProtocol.getDefaultInstance());
+    }
+
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         while (in.readableBytes() > 4) { // 如果可读长度小于包头长度，退出。
@@ -26,14 +38,17 @@ public class CustomProtobufDecoder extends ByteToMessageDecoder {
 
             // 获取包头中的body长度
             byte low = in.readByte();
+            byte mid = in.readByte();
             byte high = in.readByte();
-            short s0 = (short) (low & 0xff);
-            short s1 = (short) (high & 0xff);
+            int s0 = low & 0xff;
+            int s1 = mid & 0xff;
+            int s2 = high & 0xff;
+
             s1 <<= 8;
-            short length = (short) (s0 | s1);
+            s2 <<= 16;
+            int length = s0 | s1 | s2;
 
             // 获取包头中的protobuf类型
-            in.readByte();
             byte dataType = in.readByte();
 
             // 如果可读长度小于body长度，恢复读指针，退出。
@@ -42,7 +57,6 @@ public class CustomProtobufDecoder extends ByteToMessageDecoder {
                 return;
             }
 
-
             // 读取body
             ByteBuf bodyByteBuf = in.readBytes(length);
 
@@ -50,7 +64,7 @@ public class CustomProtobufDecoder extends ByteToMessageDecoder {
                 byte[] array;
                 int offset;
 
-                int readableLen= bodyByteBuf.readableBytes();
+                int readableLen = bodyByteBuf.readableBytes();
                 if (bodyByteBuf.hasArray()) {
                     array = bodyByteBuf.array();
                     offset = bodyByteBuf.arrayOffset() + bodyByteBuf.readerIndex();
@@ -69,22 +83,7 @@ public class CustomProtobufDecoder extends ByteToMessageDecoder {
         }
     }
 
-    public MessageLite decodeBody(byte dataType, byte[] array, int offset, int length) throws Exception {
-        if (dataType == 0x00) {
-            return ChatMessageProto.ChatMessageProtocol.getDefaultInstance().
-                    getParserForType().parseFrom(array, offset, length);
-
-        } else if (dataType == 0x01) {
-            return HeartBeatProto.HeartBeatProtocol.getDefaultInstance().
-                    getParserForType().parseFrom(array, offset, length);
-        } else if (dataType == 0x02) {
-            return LogRequestProto.LogRequestProtocol.getDefaultInstance().
-                    getParserForType().parseFrom(array, offset ,length);
-        } else if (dataType == 0x03) {
-            return MessageResponseProto.MessageResponseProtocol.getDefaultInstance().
-                    getParserForType().parseFrom(array, offset ,length);
-        }
-
-        return null; // or throw exception
+    private MessageLite decodeBody(byte dataType, byte[] array, int offset, int length) throws Exception {
+        return map.get(dataType).getParserForType().parseFrom(array, offset, length);
     }
 }

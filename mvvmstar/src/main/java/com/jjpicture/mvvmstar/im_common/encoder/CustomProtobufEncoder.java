@@ -18,20 +18,18 @@ import io.netty.handler.codec.MessageToByteEncoder;
  */
 @Sharable
 public class CustomProtobufEncoder extends MessageToByteEncoder<MessageLite> {
+    public final static CustomProtobufEncoder INSTANCE = new CustomProtobufEncoder();
 
     @Override
     protected void encode(ChannelHandlerContext ctx, MessageLite msg, ByteBuf out) throws Exception {
-
         byte[] body = msg.toByteArray();
-        byte[] header = encodeHeader(msg, (short)body.length);
+        byte[] header = encodeHeader(msg, body.length);
 
         out.writeBytes(header);
         out.writeBytes(body);
-
-        return;
     }
 
-    private byte[] encodeHeader(MessageLite msg, short bodyLength) {
+    private byte[] encodeHeader(MessageLite msg, int bodyLength) {
         byte messageType = 0x0f;
 
         if (msg instanceof ChatMessageProto.ChatMessageProtocol) {
@@ -44,12 +42,15 @@ public class CustomProtobufEncoder extends MessageToByteEncoder<MessageLite> {
             messageType = 0x03;
 
         byte[] header = new byte[4];
+        //存储bodyLength的低八位
         header[0] = (byte) (bodyLength & 0xff);
+        //存储bodyLength的中八位
         header[1] = (byte) ((bodyLength >> 8) & 0xff);
-        header[2] = 0; // 保留字段
+        //存储bodyLength的高八位
+        header[2] = (byte) ((bodyLength >> 16) & 0xff);
+        //存储消息协议类型
         header[3] = messageType;
 
         return header;
-
     }
 }
