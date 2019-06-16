@@ -13,6 +13,8 @@ import com.alibaba.fastjson.JSONObject;
 import org.webrtc.AudioSource;
 import org.webrtc.AudioTrack;
 import org.webrtc.DataChannel;
+import org.webrtc.HardwareVideoDecoderFactory;
+import org.webrtc.HardwareVideoEncoderFactory;
 import org.webrtc.IceCandidate;
 import org.webrtc.MediaConstraints;
 import org.webrtc.MediaStream;
@@ -72,7 +74,10 @@ public class WebRTCClient {
         typeMap.put("answer", 6);
         typeMap.put("candidate", 7);
 
-        peerConnectionFactory = PeerConnectionFactory.builder().createPeerConnectionFactory();
+        peerConnectionFactory = PeerConnectionFactory.builder()
+                .setVideoDecoderFactory(new HardwareVideoDecoderFactory())
+                .setVideoEncoderFactory(new HardwareVideoEncoderFactory(true, true))
+                .createPeerConnectionFactory();
         iceServers.add(PeerConnection.IceServer.builder("stun:23.21.150.121").createIceServer());
         iceServers.add(PeerConnection.IceServer.builder("stun:stun.l.google.com:19302").createIceServer());
 
