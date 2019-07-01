@@ -90,7 +90,7 @@ public class IMClient {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline()
                                 .addLast(new IMIdleStateHandler())
-                                .addLast("decoder", CustomProtobufDecoder.INSTANCE)
+                                .addLast("decoder", new CustomProtobufDecoder())
                                 .addLast("encoder", CustomProtobufEncoder.INSTANCE)
                                 .addLast(new LogRequestHandler(imServer,handler))
                                 .addLast(new HeartBeatHandler())

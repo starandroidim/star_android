@@ -39,7 +39,7 @@ public class RetrofitClient {
     //缓存时间
     private static final int CACHE_TIMEOUT = 10 * 1024 * 1024;
     //服务端根路径
-    public static String baseUrl = "http://39.105.139.90:8081/";
+    public static String baseUrl = "http://39.100.110.18:8081/";
 
     private static Context mContext = Utils.getContext();
 

@@ -3,16 +3,17 @@ package com.jjpicture.star_android.im.config;
 
 public class RouteURLConfig {
 
+    private static String ROUTE_IP = "39.100.110.18:8081";
 
-    private static String loginURL = "http://39.105.139.90:8081/login";
-
-
-    private static String loginInfoURL = "http://39.105.139.90:8081/loginInfo";
-
-    private static String logoutURL = "http://39.105.139.90:8081/logout";
+    private static String loginURL = "http://" + ROUTE_IP + "/login";
 
 
-    private static String registerUrl = "http://39.105.139.90:8081/register";
+    private static String loginInfoURL = "http://" + ROUTE_IP + "/loginInfo";
+
+    private static String logoutURL = "http://" + ROUTE_IP + "/logout";
+
+
+    private static String registerUrl = "http://" + ROUTE_IP + "/register";
 
     public static String getLoginURL() {
         return loginURL;

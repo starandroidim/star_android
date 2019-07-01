@@ -21,10 +21,10 @@ import java.util.Map;
  * @date 2019/3/618:52
  */
 public class CustomProtobufDecoder extends ByteToMessageDecoder {
-    public final static CustomProtobufDecoder INSTANCE = new CustomProtobufDecoder();
-    private final Map<Byte, MessageLite> map = new HashMap<>();
+//    public final static CustomProtobufDecoder INSTANCE = new CustomProtobufDecoder();
+    private final static Map<Byte, MessageLite> map = new HashMap<>();
 
-    private CustomProtobufDecoder() {
+    static {
         map.put((byte)0, ChatMessageProto.ChatMessageProtocol.getDefaultInstance());
         map.put((byte)1, HeartBeatProto.HeartBeatProtocol.getDefaultInstance());
         map.put((byte)2, LogRequestProto.LogRequestProtocol.getDefaultInstance());
